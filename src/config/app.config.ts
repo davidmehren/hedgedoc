@@ -12,6 +12,16 @@ export interface AppConfig {
   port: number;
   loglevel: LogLevel;
   linkifyHeaderStyle: LinkifyHeaderStyle;
+  hsts: {
+    enable: boolean;
+    maxAgeSeconds: number;
+    includeSubdomains: boolean;
+    preload: boolean;
+  };
+  csp: {
+    enable: boolean;
+    reportURI: string;
+  };
   media: {
     backend: {
       use: MediaBackend;
@@ -136,6 +146,16 @@ const schema = Joi.object({
   port: Joi.number(),
   loglevel: Joi.string().valid(...Object.values(LogLevel)).default(LogLevel.WARN),
   linkifyHeaderStyle: Joi.string().valid(...Object.values(LinkifyHeaderStyle)).default(LinkifyHeaderStyle.GFM),
+  hsts: {
+    enable: Joi.boolean().default(true),
+    maxAgeSeconds: Joi.number().default(60 * 60 * 24 * 365),
+    includeSubdomains: Joi.boolean().default(true),
+    preload: Joi.boolean().default(true),
+  },
+  csp: {
+    enable: Joi.boolean().default(true),
+    reportURI: Joi.string(),
+  },
   media: {
     backend: {
       use: Joi.string().valid(...Object.values(MediaBackend)),
@@ -283,6 +303,16 @@ export default registerAs('appConfig', async () => {
       port: parseInt(process.env.PORT) || undefined,
       loglevel: process.env.HD_LOGLEVEL,
       linkifyHeaderStyle: process.env.HD_LINKIFY_HEADER_STYLE,
+      hsts: {
+        enable: process.env.HD_HSTS_ENABLE,
+        maxAgeSeconds: process.env.HD_HSTS_MAX_AGE,
+        includeSubdomains: process.env.HD_HSTS_INCLUDE_SUBDOMAINS,
+        preload: process.env.HD_HSTS_PRELOAD,
+      },
+      csp: {
+        enable: process.env.HD_CSP_ENABLE,
+        reportURI: process.env.HD_CSP_REPORTURI,
+      },
       media: {
         backend: {
           use: process.env.HD_MEDIA_BACKEND,
@@ -594,7 +624,7 @@ export default registerAs('appConfig', async () => {
     },
   );
   if (appConfig.error) {
-    throw new Error(appConfig.error.toJoi.string());
+    throw new Error(appConfig.error.toString());
   }
   return appConfig.value;
 });
