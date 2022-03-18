@@ -36,7 +36,7 @@ jobs:
     container:
       image: ghcr.io/davidmehren/hedgedoc-ci:${{ github.sha }}
     steps:
-      - run: yarn run test
+      - run: cd /usr/src/app && yarn run test
 
   sqlite-e2e:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
     container:
       image: ghcr.io/davidmehren/hedgedoc-ci:${{ github.sha }}
     steps:
-      - run: yarn run test:e2e
+      - run: cd /usr/src/app && yarn run test:e2e
 
   build-prod:
     runs-on: ubuntu-latest
