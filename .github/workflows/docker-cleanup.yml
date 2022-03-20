@@ -7,14 +7,14 @@ on:
 
 jobs:
   clean-ghcr:
-    name: Delete old unused container images
+    name: Cleanup CI containers
     runs-on: ubuntu-latest
     steps:
-      - name: Delete CI containers older than a week
+      - name: Cleanup CI containers
         uses: snok/container-retention-policy@v1
         with:
           image-names: hedgedoc-ci
-          cut-off: A week ago UTC
+          cut-off: A day ago UTC
           account-type: personal
           # org-name: my-org
           token: ${{ secrets.PAT_IMAGE_CLEANUP }}
