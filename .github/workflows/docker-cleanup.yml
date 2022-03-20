@@ -13,7 +13,7 @@ jobs:
       - name: Delete CI containers older than a week
         uses: snok/container-retention-policy@v1
         with:
-          image-names: davidmehren/hedgedoc-ci
+          image-names: hedgedoc-ci
           cut-off: A week ago UTC
           account-type: personal
           # org-name: my-org
