@@ -17,4 +17,4 @@ jobs:
           cut-off: A week ago UTC
           account-type: personal
           # org-name: my-org
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_IMAGE_CLEANUP }}
